@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 char *readInputLine();
-char **getArguments(const char *line);
+char **getArguments(char *line);
 
 int main(void)
 {
@@ -15,7 +16,6 @@ int main(void)
         printf("# ");
         command = readInputLine();
         tokens = getArguments(command);
-        printf("%s", command);
         free(command);
     } while (!end);
 
@@ -38,6 +38,34 @@ char *readInputLine()
 }
 
 /* Splits the command into arguments */
-char **getArguments(const char *line)
+char **getArguments(char *line)
 {
+    /* Pointer to char pointer for storing arguments, initial size is 1 */
+    char **args = malloc(sizeof(char *));
+    /* Error handling */
+    if (args == NULL)
+    {
+        fprintf(stderr, "Error: cannot split line.");
+        exit(EXIT_FAILURE);
+    }
+    int count = 0;
+    /* Try to parse first argument */
+    char *temp = strtok(line, "\t\n ");
+    while (temp != NULL)
+    {
+        args[count++] = temp;
+        /* Reallocate more space for next argument */
+        args = realloc(args, (count + 1) * sizeof(char *));
+        /* Error handling */
+        if (args == NULL)
+        {
+            fprintf(stderr, "Error: cannot split line.");
+            exit(EXIT_FAILURE);
+        }
+        /* Move to next token */
+        temp = strtok(NULL, " ");
+    }
+    /* NULL terminate the array so that we know where's the end */
+    args[count] = NULL;
+    return args;
 }
