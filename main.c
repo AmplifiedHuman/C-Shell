@@ -6,7 +6,7 @@
 
 char *readInputLine();
 char **getArguments(char *line);
-int executeCommand(char *args);
+void executeCommand(char **args);
 
 int main(void)
 {
@@ -17,8 +17,8 @@ int main(void)
     {
         printf("# ");
         command = readInputLine();
-        // tokens = getArguments(command);
-        executeCommand(command);
+        tokens = getArguments(command);
+        executeCommand(tokens);
         free(command);
     } while (!end);
 
@@ -73,8 +73,29 @@ char **getArguments(char *line)
 }
 
 /* Executes a give command, return 1 or 0 according to status */
-int executeCommand(char *args)
+void executeCommand(char **args)
 {
-    system(args);
-    return 0;
+    /* Status flag */
+    int flag = 0;
+    /* Create a new child */
+    pid_t pid = fork();
+    /* Fork error */
+    if (pid < 0)
+    {
+        fprintf(stderr, "Error: forking error.");
+    }
+    /* Child process */
+    else if (pid == 0)
+    {
+        /* Replace process with system call */
+        execvp(args[0], args);
+        /* If not successful print error message and exit */
+        fprintf(stderr, "%s: command not found\n", args[0]);
+    }
+    /* Parent process */
+    else
+    {
+        /* Wait for child */
+        wait(&pid);
+    }
 }
