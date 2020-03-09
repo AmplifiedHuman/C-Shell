@@ -2,9 +2,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 char *readInputLine();
 char **getArguments(char *line);
+int executeCommand(char *args);
 
 int main(void)
 {
@@ -15,7 +17,8 @@ int main(void)
     {
         printf("# ");
         command = readInputLine();
-        tokens = getArguments(command);
+        // tokens = getArguments(command);
+        executeCommand(command);
         free(command);
     } while (!end);
 
@@ -29,10 +32,9 @@ char *readInputLine()
     size_t bufferSize = 0;
     int flag = getline(&line, &bufferSize, stdin);
     /* Print error message and quit if line is not read properly */
-    if (flag == -1)
+    if (flag == EOF)
     {
-        fprintf(stderr, "Error: cannot read line.");
-        exit(EXIT_FAILURE);
+        exit(EXIT_SUCCESS);
     }
     return line;
 }
@@ -68,4 +70,11 @@ char **getArguments(char *line)
     /* NULL terminate the array so that we know where's the end */
     args[count] = NULL;
     return args;
+}
+
+/* Executes a give command, return 1 or 0 according to status */
+int executeCommand(char *args)
+{
+    system(args);
+    return 0;
 }
