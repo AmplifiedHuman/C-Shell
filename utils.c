@@ -53,8 +53,13 @@ void runCommand(char **args)
     /* If child process */
     if (pid == 0)
     {
+        /* Check if command is cd */
+        if (strcmp(args[0], "cd") == 0)
+        {
+            changeDirectory(args);
+        }
         /* Try to execute command */
-        if (execvp(args[0], args) == -1)
+        else if (execvp(args[0], args) == -1)
         {
             /* If failed print error and terminate child process */
             perror("Error");
@@ -70,5 +75,28 @@ void runCommand(char **args)
     else
     {
         wait(&pid);
+    }
+}
+
+void changeDirectory(char **args)
+{
+    /* If first argument is NULL, we cd to HOME directory */
+    if (args[1] == NULL)
+    {
+        char *homedir = getenv("HOME");
+        /* Check if chdir is successful */
+        if (chdir(homedir) != 0)
+        {
+            perror("Error");
+        }
+    }
+    /* Else cd to first argument */
+    else
+    {
+        /* Check if chdir is successful */
+        if (chdir(args[1]) != 0)
+        {
+            perror("Error");
+        }
     }
 }
