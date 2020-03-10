@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 #include <signal.h>
+#include <errno.h>
 
 char *getInputLine(void);
 char **getTokens(char *inputLine);

@@ -8,7 +8,7 @@ char *getInputLine(void)
     int flag = getline(&inputLine, &bufSize, stdin);
     if (!flag)
     {
-        fprintf(stderr, "Error: cannot read line");
+        perror("Error");
         exit(EXIT_FAILURE);
     }
     return inputLine;
@@ -20,7 +20,7 @@ char **getTokens(char *inputLine)
     char **args = malloc(sizeof(char *));
     if (args == NULL)
     {
-        fprintf(stderr, "Error: cannot allocate memory");
+        perror("Error");
         exit(EXIT_FAILURE);
     }
     int count = 1;
@@ -32,7 +32,7 @@ char **getTokens(char *inputLine)
         char **reallocated = realloc(args, count * sizeof(char *));
         if (reallocated == NULL)
         {
-            fprintf(stderr, "Error: cannot split line.");
+            perror("Error");
             exit(EXIT_FAILURE);
         }
         else
@@ -57,14 +57,14 @@ void runCommand(char **args)
         if (execvp(args[0], args) == -1)
         {
             /* If failed print error and terminate child process */
-            fprintf(stderr, "Error: %s: Unknown program.\n", args[0]);
+            perror("Error");
             exit(EXIT_FAILURE);
         }
     }
     /* If forking failed */
     else if (pid < 0)
     {
-        fprintf(stderr, "Error: forking failed");
+        perror("Error");
     }
     /* If parent process */
     else

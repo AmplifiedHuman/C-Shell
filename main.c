@@ -14,7 +14,7 @@ int main(int argc, char **argv)
     /* Try to catch SIGINT Signal */
     if (signal(SIGINT, sigINTGHandler) == SIG_ERR)
     {
-        fprintf(stderr, "Error: cannot catch signal");
+        perror("Error");
     }
 
     while (!feof(stdin))

@@ -2,3 +2,4 @@ main
 .vscode/launch.json
 .vscode/tasks.json
 main.dSYM/Contents/Info.plist
+.vscode/settings.json
