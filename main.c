@@ -14,13 +14,18 @@ int main(int argc, char **argv)
     /* Try to catch SIGINT Signal */
     if (signal(SIGINT, sigINTGHandler) == SIG_ERR)
     {
-        perror("Error");
+        perror("SignalError");
     }
 
-    while (!feof(stdin))
+    while (true)
     {
         printPrompt();
         input = getInputLine();
+        if (input == NULL)
+        {
+            puts("");
+            exit(EXIT_SUCCESS);
+        }
         inputTokens = getTokens(input);
         runCommand(inputTokens);
         /* Free resources before processing next command */

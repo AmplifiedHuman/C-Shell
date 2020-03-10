@@ -1,14 +1,18 @@
 #include "shell.h"
 
-/* Reads a line */
+/* Reads a line, returns NULL is EOF encountered */
 char *getInputLine(void)
 {
     char *inputLine = NULL;
     size_t bufSize = 0;
     int flag = getline(&inputLine, &bufSize, stdin);
+    if (feof(stdin))
+    {
+        return NULL;
+    }
     if (!flag)
     {
-        perror("Error");
+        perror("getLineError");
         exit(EXIT_FAILURE);
     }
     return inputLine;
@@ -20,7 +24,7 @@ char **getTokens(char *inputLine)
     char **args = malloc(sizeof(char *));
     if (args == NULL)
     {
-        perror("Error");
+        perror("MallocError");
         exit(EXIT_FAILURE);
     }
     int count = 1;
@@ -32,7 +36,7 @@ char **getTokens(char *inputLine)
         char **reallocated = realloc(args, count * sizeof(char *));
         if (reallocated == NULL)
         {
-            perror("Error");
+            perror("ReallocError");
             exit(EXIT_FAILURE);
         }
         else
@@ -73,14 +77,14 @@ void runCommand(char **args)
         else if (execvp(args[0], args) == -1)
         {
             /* If failed print error and terminate child process */
-            perror("Error");
+            perror("ExecutionError");
             exit(EXIT_FAILURE);
         }
     }
     /* If forking failed */
     else if (pid < 0)
     {
-        perror("Error");
+        perror("ForkingError");
     }
     /* If parent process */
     else
@@ -134,19 +138,19 @@ void changeDirectory(char **args)
     if (args[1] == NULL)
     {
         char *homedir = getenv("HOME");
-        /* Check if chdir is successful */
+        /* Check if chdir is unsuccessful */
         if (chdir(homedir) != 0)
         {
-            perror("Error");
+            perror("chdirError");
         }
     }
     /* Else cd to first argument */
     else
     {
-        /* Check if chdir is successful */
+        /* Check if chdir is unsuccessful */
         if (chdir(args[1]) != 0)
         {
-            perror("Error");
+            perror("chdirError");
         }
     }
 }
