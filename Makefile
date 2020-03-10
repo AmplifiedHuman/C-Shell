@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-c -Wall
-SOURCES=main.c utils.c
-OBJ=main.o utils.o
+SOURCES=main.c utils.c symbol.c
+OBJ=main.o utils.o symbol.o
 HFILES=shell.h
 EXEC=main
 

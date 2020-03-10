@@ -11,3 +11,4 @@
 char *getInputLine(void);
 char **getTokens(char *inputLine);
 void runCommand(char **args);
+void printPrompt(void);
