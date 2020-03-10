@@ -45,7 +45,7 @@ char **getTokens(char *inputLine)
     return args;
 }
 
-/* Run a command using execvp */
+/* Run a command using execvp or cd */
 void runCommand(char **args)
 {
     pid_t pid = fork();
@@ -53,6 +53,17 @@ void runCommand(char **args)
     /* If child process */
     if (pid == 0)
     {
+        /* Check if there's input redirection */
+        if (checkRedirect(args))
+        {
+            /* If there's input redirection process redirection first */
+            if (processRedirect(args) == 1)
+            {
+                /* If failed, print fail message and quit child proc */
+                fprintf(stderr, "Shell: invalid redirection\n");
+                exit(EXIT_FAILURE);
+            }
+        }
         /* Check if command is cd */
         if (strcmp(args[0], "cd") == 0)
         {
@@ -78,6 +89,45 @@ void runCommand(char **args)
     }
 }
 
+/* Check for '>' */
+bool checkRedirect(char **args)
+{
+    int i = 0;
+    while (args[i] != NULL)
+    {
+        if (strcmp(args[i], ">") == 0)
+        {
+            return true;
+        }
+        i++;
+    }
+    return false;
+}
+
+/* Modify args and also redirects output, returns 0 if redirection is successful, 1 otherwise */
+int processRedirect(char **args)
+{
+    int i = -1;
+    while (strcmp(args[++i], ">") != 0)
+    {
+    }
+    if (i == 0 || args[i + 1] == NULL)
+    {
+        return 1;
+    }
+    else
+    {
+        char *fileName = args[i + 1];
+        int f = open(fileName, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+        /* Replace file descriptor of stdout with f */
+        dup2(f, 1);
+        /* NULL terminate args at position of > */
+        args[i] = NULL;
+    }
+    return 0;
+}
+
+/* Changes the current working directory */
 void changeDirectory(char **args)
 {
     /* If first argument is NULL, we cd to HOME directory */
