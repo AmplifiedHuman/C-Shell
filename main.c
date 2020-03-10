@@ -6,6 +6,13 @@ int main(int argc, char **argv)
     char **inputTokens;
     char timeBuffer[20];
 
+    /* Try to catch SIGINT Signal */
+    if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+    {
+        fprintf(stderr, "Error: cannot catch signal\n");
+        exit(EXIT_FAILURE);
+    }
+
     while (true)
     {
         /* If EOF key entered terminate program */

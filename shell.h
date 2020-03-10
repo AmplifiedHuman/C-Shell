@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <signal.h>
 
 char *getInputLine(void);
 char **getTokens(char *inputLine);
