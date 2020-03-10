@@ -4,9 +4,18 @@ int main(int argc, char **argv)
 {
     char *input;
     char **inputTokens;
+    char timeBuffer[20];
+
     while (true)
     {
-        printf("# ");
+        /* If EOF key entered terminate program */
+        if (feof(stdin))
+        {
+            exit(EXIT_SUCCESS);
+        }
+        time_t now = time(NULL);
+        strftime(timeBuffer, 20, "[%d/%m %H:%M]", localtime(&now));
+        fprintf(stdout, "%s # ", timeBuffer);
         /* Need to flush stdout as no new line character included */
         fflush(stdout);
         input = getInputLine();

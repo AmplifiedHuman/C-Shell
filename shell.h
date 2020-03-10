@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 char *getInputLine(void);
 char **getTokens(char *inputLine);
