@@ -31,6 +31,11 @@ int main(int argc, char **argv)
             exit(EXIT_SUCCESS);
         }
         inputTokens = getTokens(input);
+        /* If inputTokens is NULL, it means that there is only the newline character, loop again */
+        if (inputTokens == NULL)
+        {
+            continue;
+        }
         runCommand(inputTokens);
         /* Free resources before processing next command */
         free(input);

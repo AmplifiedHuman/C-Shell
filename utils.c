@@ -22,7 +22,7 @@ char *getInputLine(void)
     return inputLine;
 }
 
-/* Splits the given line into tokens */
+/* Splits the given line into tokens, returns NULL if inputLine is new line character. */
 char **getTokens(char *inputLine)
 {
     char **args = malloc(sizeof(char *));
@@ -30,6 +30,11 @@ char **getTokens(char *inputLine)
     {
         perror("MallocError");
         exit(EXIT_FAILURE);
+    }
+    /* if inputline is new line character, return NULL */
+    if (strcmp(inputLine, "\n") == 0)
+    {
+        return NULL;
     }
     int count = 1;
     char *temp = strtok(inputLine, " \t\n");
