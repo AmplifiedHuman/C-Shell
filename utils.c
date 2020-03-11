@@ -56,6 +56,13 @@ char **getTokens(char *inputLine)
 /* Run a command using execvp or cd */
 void runCommand(char **args)
 {
+    /* Check if command is cd, if so change directory and return (Do not create child process) */
+    if (strcmp(args[0], "cd") == 0)
+    {
+        changeDirectory(args);
+        return;
+    }
+    /* If command is not cd, create child proc */
     pid_t pid = fork();
 
     /* If child process */
@@ -72,15 +79,8 @@ void runCommand(char **args)
                 exit(EXIT_FAILURE);
             }
         }
-        /* Check if command is cd */
-        if (strcmp(args[0], "cd") == 0)
-        {
-            changeDirectory(args);
-            /* Terminate child process */
-            exit(EXIT_SUCCESS);
-        }
         /* Try to execute command */
-        else if (execvp(args[0], args) == -1)
+        if (execvp(args[0], args) == -1)
         {
             /* If failed print error and terminate child process */
             perror("ExecutionError");
