@@ -1,4 +1,4 @@
-AC_INIT([Shell], 1.0)
+AC_INIT([assign2_18202044], 1.0)
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_PROG_CC
 AC_CONFIG_FILES(Makefile)
