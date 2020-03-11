@@ -1,3 +1,7 @@
+/* Name: Tee Chee Guan
+ * Student Number: 18202044
+ * Email: chee.tee@ucdconnect.ie
+ */
 #include <stdio.h>
 #include <stdbool.h>
 #include <unistd.h>
