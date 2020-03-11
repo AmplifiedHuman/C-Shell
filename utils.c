@@ -76,6 +76,8 @@ void runCommand(char **args)
         if (strcmp(args[0], "cd") == 0)
         {
             changeDirectory(args);
+            /* Terminate child process */
+            exit(EXIT_SUCCESS);
         }
         /* Try to execute command */
         else if (execvp(args[0], args) == -1)
