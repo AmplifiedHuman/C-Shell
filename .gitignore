@@ -1,4 +1,3 @@
-main
 .vscode/launch.json
 .vscode/tasks.json
 main.dSYM/Contents/Info.plist
@@ -53,5 +52,5 @@ m4/lt~obsolete.m4
 # can automatically generate from config.status script
 # (which is called by configure script))
 /Makefile
-/assign2_18202044
+/c_shell
 *.o
